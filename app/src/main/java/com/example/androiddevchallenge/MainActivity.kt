@@ -18,16 +18,25 @@ package com.example.androiddevchallenge
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.foundation.layout.Column
+import androidx.compose.animation.fadeIn
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Constraints
+import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
 import com.example.androiddevchallenge.ui.theme.MyTheme
+import dev.chrisbanes.accompanist.coil.CoilImage
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,7 +53,7 @@ class MainActivity : AppCompatActivity() {
 @Composable
 fun MyApp() {
     Surface(color = MaterialTheme.colors.background) {
-        Text(text = "Ready... Set... GO!")
+        PuppyList()
     }
 }
 
@@ -52,16 +61,39 @@ fun MyApp() {
 fun PuppyList() {
     val scrollState = rememberLazyListState()
 
-    LazyColumn(state = scrollState) {
+    LazyColumn(state = scrollState, modifier = Modifier.fillMaxWidth()) {
         items(DataSource.tempData.size) {
-            DataSource.tempData
+            Card(modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp)) {
+                PuppyListItem(it)
+            }
         }
     }
 }
 
 @Composable
 fun PuppyListItem(index: Int) {
+    val item = DataSource.tempData[index]
+    ConstraintLayout(modifier = Modifier.padding(bottom = 10.dp)) {
+        val (image, name, gender, age, adoptButton) = createRefs()
+        CoilImage(
+            data = item.images?.firstOrNull() ?: "",
+            contentDescription = "puppy image",
+            fadeIn = true,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier.height(150.dp).fillMaxWidth().constrainAs(image) {
+                top.linkTo(parent.top)
+                start.linkTo(parent.start)
+                end.linkTo(parent.end)
+            }
+        )
+        Text(item.name ?: "", Modifier.constrainAs(name) {
+            top.linkTo(image.bottom, margin = 10.dp)
+            start.linkTo(parent.start, margin = 20.dp)
+        })
+
+    }
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
+
 
     }
 }
