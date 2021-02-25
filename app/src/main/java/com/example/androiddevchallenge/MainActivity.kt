@@ -18,10 +18,14 @@ package com.example.androiddevchallenge
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.androiddevchallenge.ui.theme.MyTheme
 
@@ -41,6 +45,24 @@ class MainActivity : AppCompatActivity() {
 fun MyApp() {
     Surface(color = MaterialTheme.colors.background) {
         Text(text = "Ready... Set... GO!")
+    }
+}
+
+@Composable
+fun PuppyList() {
+    val scrollState = rememberLazyListState()
+
+    LazyColumn(state = scrollState) {
+        items(DataSource.tempData.size) {
+            DataSource.tempData
+        }
+    }
+}
+
+@Composable
+fun PuppyListItem(index: Int) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+
     }
 }
 
