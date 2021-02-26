@@ -23,6 +23,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.Button
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -31,6 +32,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
@@ -74,26 +76,38 @@ fun PuppyList() {
 fun PuppyListItem(index: Int) {
     val item = DataSource.tempData[index]
     ConstraintLayout(modifier = Modifier.padding(bottom = 10.dp)) {
-        val (image, name, gender, age, adoptButton) = createRefs()
+        val (image, name, gender, age, adoptButton, collectButton) = createRefs()
         CoilImage(
             data = item.images?.firstOrNull() ?: "",
             contentDescription = "puppy image",
             fadeIn = true,
             contentScale = ContentScale.Crop,
-            modifier = Modifier.height(150.dp).fillMaxWidth().constrainAs(image) {
-                top.linkTo(parent.top)
-                start.linkTo(parent.start)
-                end.linkTo(parent.end)
-            }
+            alignment = Alignment.TopCenter,
+            modifier = Modifier
+                .height(150.dp)
+                .fillMaxWidth()
+                .constrainAs(image) {
+                    top.linkTo(parent.top)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                }
         )
-        Text(item.name ?: "", Modifier.constrainAs(name) {
+        val nameLabel = String.format(
+            LocalContext.current.getString(R.string.label_name),
+            item.name
+        )
+        Text(nameLabel, Modifier.constrainAs(name) {
             top.linkTo(image.bottom, margin = 10.dp)
             start.linkTo(parent.start, margin = 20.dp)
         })
+        Button(onClick = {
 
-    }
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        }, Modifier.size(40.dp, 40.dp).constrainAs(collectButton) {
+            top.linkTo(parent.top, margin = 16.dp)
+            end.linkTo(parent.end, margin = 16.dp)
+        }) {
 
+        }
 
     }
 }
