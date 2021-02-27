@@ -5,13 +5,14 @@ data class Puppy(
     val name: String? = null,
     val images: List<String>? = null,
     val breed: String? = null,
-    val age: Int? = null,
+    val age: String? = null,
     val gender: Gender? = null,
-    val birthday: String? = null,
+    val address: String? = null,
     val intro: String? = null,
     val gotVaccine: Boolean? = null,
     val sterilized: Boolean? = null
 ) {
+    var like: Boolean = false
     enum class Gender {
         BOY, GIRL
     }
